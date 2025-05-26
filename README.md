@@ -97,19 +97,20 @@ PostgreSQL এ VARCHAR এবং CHAR, এই দুটো data types সাধ�
 
 **`উদাহরণ` -**
 ```mardown
-CREATE TABLE teachers (
-    id serial PRIMARY KEY,
-    full_name VARCHAR(50),
-    post_code CHAR(6)
-);
+    CREATE TABLE teachers (
+        id serial PRIMARY KEY,
+        full_name VARCHAR(50),
+        post_code CHAR(6)
+    );
 ```
 ```markdown
-INSERT INTO teachers (id, full_name, post_code) VALUES
-(1, 'Anik Sarkar', '788100');
+    INSERT INTO teachers (id, full_name, post_code) VALUES
+    (1, 'Anik Sarkar', '788100');
 
 ```
-উপরের টেবিলে full_name এর VALUE হিসেবে সর্বোচ্চ ৫০ CHARACTERS সম্বলিত কোনো TEXT দেওয়া যাবে । ৫০ CHARACTERS এর বেশি কোনো টেক্সট দিলে ERROR দেখাবে ।
-কিন্তু post_code এর VALUE হিসেবে ৬ CHARACTERS সম্বলিত কোনো TEXT দিতেই হবে । যদি এর কম CHARACTERS সম্বলিত কোনো টেক্সট দেওয়া হয়, তাহলে DEFAULT ভাবে ৬ CHARACTERS পূর্ন না হওয়া পর্যন্ত স্পেস (SPACE) বসে যাবে । ৬ CHARACTERS এর বেশি কোনো টেক্সট দিলে ERROR দেখাবে ।
+উপরের টেবিলে full_name এর VALUE হিসেবে সর্বোচ্চ ৫০ CHARACTERS সম্বলিত কোনো TEXT দেওয়া যাবে । ৫০ CHARACTERS এর বেশি কোনো টেক্সট দিলে ERROR দেখাবে ।কিন্তু post_code এর VALUE হিসেবে ৬ CHARACTERS সম্বলিত কোনো TEXT দিতেই হবে । যদি এর কম CHARACTERS সম্বলিত কোনো টেক্সট দেওয়া হয়, তাহলে DEFAULT ভাবে ৬ CHARACTERS পূর্ন না হওয়া পর্যন্ত স্পেস (SPACE) বসে যাবে । ৬ CHARACTERS এর বেশি কোনো টেক্সট দিলে ERROR দেখাবে ।
+
+---
 
 ## 4. How can you modify data using UPDATE statements ?
 একটা টেবিলের কোনো DATA পরিবর্তন/সংশোধন করতে UPDATE statement ব্যবহার করা হয়।
@@ -134,7 +135,7 @@ INSERT INTO teachers (id, full_name, post_code) VALUES
     (3, 'Shamsul', 'Arefin', 303)
 ```
 ### Table `Before Update` -
-![Alt text](https://i.ibb.co/r2qWJmFr/image.png "Image of patients table")
+![Table before update](https://i.ibb.co/r2qWJmFr/image.png "Image of patients table")
 
 এখন যদি id = 3 এর bed_no পরিবর্তন করে, 303 থেকে 220 করতে চাই -
 ```markdown
@@ -146,6 +147,65 @@ INSERT INTO teachers (id, full_name, post_code) VALUES
     WHERE: ঠিক কোন ROW তে আপডেট হবে, তা নির্ধারণ করে ।
 ```
 ### Table `After Update` -
-![Alt text](https://i.ibb.co/kVnrw4v0/image.png "Image of patients table after update")
+![Table after update](https://i.ibb.co/kVnrw4v0/image.png "Image of patients table after update")
 
-jkljlkjlj
+
+---
+
+## 5. What is the significance of the JOIN operation, and how does it work in PostgreSQL?
+### 📌 JOIN এর গুরুত্ব -
+একাধিক টেবিলের মধ্যে সম্পর্কযুক্ত ডেটাগুলো একসাথে নিয়ে কোনো কাজ করার জন্য JOIN Operation ব্যবহৃত হয় । সাধারণত RELATIONAL DATABASE ধারনা হলো বিভিন্ন TABLE এর মধ্যে সম্পর্ক তৈরি করে, DATABASE কে বেশি কার্যকর করে তোলা । এবং JOIN Operations মাধ্যমে আমরা এই ধারনাকে ভালোভাবে কাজে লাগাতে পারি । 
+
+### JOIN কীভাবে কাজ করে -
+JOIN Operation সাধারণত ROW MATCHING এর ভিত্তিতে কাজ করে । কোনো টেবিলের PRIMARY KEY যখন অন্য একটি টেবিলের FOREIGN KEY হিসেবে ব্যবহার করা হয় । তখন এই ২ টি টেবিলের মধ্যে JOIN Operation সম্ভব হয় ।
+
+### JOIN Operation এর সময় -
+- প্রথমে একাধিক টেবিলের মধ্যে কোন COMMON COLUMN নির্ধারণ করা হয় ।
+- তারপর SQL JOIN স্টেটমেন্ট ব্যবহার করে COMMON COLUMN মান মিলিয়ে MATCHING ROW বের করা হয় ।
+- সবশেষে একাধিক টেবিল থেকে মিল পাওয়া ROW গুলো নিয়ে একটি নতুন টেবিল তৈরি হয় ।
+
+`উদাহরন` -
+### `students` Table
+```markdown
+    CREATE TABLE students (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(50),
+        department_id INT REFERENCES departments(id)
+    )
+```
+```markdown
+INSERT INTO students (id, name, department_id) VALUES
+    (1, 'Amina Rahman', 101),
+    (2, 'Bashir Ahmed', 101),
+    (3, 'Chanchal Roy', 103),
+    (4, 'Dipto Hasan', 101),
+    (5, 'Esha Karim', 104)
+
+```
+![student table](https://i.ibb.co/wZMM1LS4/image.png "Image of student table")
+
+### `departments` Table
+
+```markdown
+    CREATE TABLE departments (
+        id SERIAL PRIMARY KEY,
+        dept_name VARCHAR(100)
+    )
+```
+```markdown
+    INSERT INTO departments (id, dept_name) VALUES
+    (101, 'Computer Science'),
+    (102, 'Electronics & Communication'),
+    (103, 'Mechanical Engineering'),
+    (104, 'Electrical Engineering'),
+    (105, 'Information Technology')
+```
+![department table](https://i.ibb.co/bjcck9w9/image.png "Image of department table")
+
+### এখন যদি আমরা শুধুমাত্র প্রতিটা student এর department দেখতে চাই -
+
+```markdown
+SELECT students.id, students.name, departments.dept_name  FROM students
+JOIN departments ON students.department_id= departments.id
+```
+![table after join operation](https://i.ibb.co/vvJ8c2sd/image.png "Image after join")
