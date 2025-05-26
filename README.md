@@ -147,3 +147,5 @@ INSERT INTO teachers (id, full_name, post_code) VALUES
 ```
 ### Table `After Update` -
 ![Alt text](https://i.ibb.co/kVnrw4v0/image.png "Image of patients table after update")
+
+ijjkljljlj
