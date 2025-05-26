@@ -109,4 +109,41 @@ INSERT INTO teachers (id, full_name, post_code) VALUES
 
 ```
 উপরের টেবিলে full_name এর VALUE হিসেবে সর্বোচ্চ ৫০ CHARACTERS সম্বলিত কোনো TEXT দেওয়া যাবে । ৫০ CHARACTERS এর বেশি কোনো টেক্সট দিলে ERROR দেখাবে ।
-কিন্তু post_code এর VALUE হিসেবে ৬ CHARACTERS সম্বলিত কোনো TEXT দিতেই হবে । যদি এর কম CHARACTERS সম্বলিত কোনো টেক্সট দেওয়া হয়, তাহলে DEFAULT ভাবে ৬ CHARACTERS পূর্ন না হওয়া পর্যন্ত স্পেস (SPACE) বসে যাবে ৬ CHARACTERS এর বেশি কোনো টেক্সট দিলে ERROR দেখাবে ।
+কিন্তু post_code এর VALUE হিসেবে ৬ CHARACTERS সম্বলিত কোনো TEXT দিতেই হবে । যদি এর কম CHARACTERS সম্বলিত কোনো টেক্সট দেওয়া হয়, তাহলে DEFAULT ভাবে ৬ CHARACTERS পূর্ন না হওয়া পর্যন্ত স্পেস (SPACE) বসে যাবে । ৬ CHARACTERS এর বেশি কোনো টেক্সট দিলে ERROR দেখাবে ।
+
+## 4. How can you modify data using UPDATE statements ?
+একটা টেবিলের কোনো DATA পরিবর্তন/সংশোধন করতে UPDATE statement ব্যবহার করা হয়।
+কিভাবে একটা টেবিলের ডাটাকে Update statement এর সাহায্যে পরিবর্তন/সংশোধন করা হয় তা নিচে উদাহরণসহ ব্যাখ্যা করা হলো -
+
+ধরি, patients নামে একটা টেবিল আছে -
+```markdown
+    CREATE TABLE patients (
+        id serial PRIMARY KEY,
+        first_name VARCHAR(50),
+        last_name VARCHAR(50),
+        bed_no INT
+    );
+```
+ 
+এবং `patients` টেবিলে কিছু ডাটা আছে -
+
+```markdown
+    INSERT INTO patients (id, first_name, last_name, bed_no) VALUES
+    (1, 'Anik', 'Sarkar', 102),
+    (2, 'Jakir', 'Joy', 222),
+    (3, 'Shamsul', 'Arefin', 303)
+```
+### Table `Before Update` -
+![Alt text](https://i.ibb.co/r2qWJmFr/image.png "Image of patients table")
+
+এখন যদি id = 3 এর bed_no পরিবর্তন করে, 303 থেকে 220 করতে চাই -
+```markdown
+    UPDATE patients
+    SET bed_no = 220
+    WHERE id = 3
+
+    SET: COLUMN এর পরিবর্তিত VALUE কি হবে, তা নির্ধারণ করে ।
+    WHERE: ঠিক কোন ROW তে আপডেট হবে, তা নির্ধারণ করে ।
+```
+### Table `After Update` -
+![Alt text](https://i.ibb.co/kVnrw4v0/image.png "Image of patients table after update")
