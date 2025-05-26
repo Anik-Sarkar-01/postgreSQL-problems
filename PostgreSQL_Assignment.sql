@@ -42,39 +42,39 @@ INSERT INTO sightings(species_id, ranger_id, location, sighting_time, notes) VAL
 (1, 2, 'Snowfall Pass', '2024-05-18 18:30:00', NULL)
 
 
--- 1️⃣ Register a new ranger with provided data with name = 'Derek Fox' and region = 'Coastal Plains'
+-- Problem 01
 INSERT INTO rangers(name, region) VALUES('Derek Fox', 'Coastal Plains');
 
--- 2️⃣ Count unique species ever sighted.
+-- Problem 02
 SELECT count(DISTINCT species_id) as unique_species_count FROM sightings
 
--- 3️⃣ Find all sightings where the location includes "Pass".
+-- Problem 03
 SELECT * FROM sightings
 WHERE location LIKE '%Pass%'
 
--- 4️⃣ List each ranger's name and their total number of sightings.
+-- Problem 04
 SELECT name, count(*) as total_sightings FROM  sightings
 JOIN rangers ON sightings.ranger_id = rangers.ranger_id
 GROUP BY name ORDER BY name ASC;
 
--- 5️⃣ List species that have never been sighted.
+-- Problem 05
 SELECT common_name FROM species
 LEFT JOIN sightings ON species.species_id = sightings.species_id
 WHERE sighting_id IS NULL;
 
--- 6️⃣ Show the most recent 2 sightings.
+-- Problem 06
 SELECT common_name, sighting_time, name FROM rangers
 JOIN sightings ON rangers.ranger_id = sightings.ranger_id
 JOIN species ON sightings.species_id = species.species_id
 ORDER BY sighting_time DESC
 LIMIT 2;
 
--- 7️⃣ Update all species discovered before year 1800 to have status 'Historic'.
+-- Problem 07
 UPDATE species
 SET conservation_status = 'Historic'
 WHERE extract(YEAR FROM discovery_date) < 1800;
 
--- 8️⃣ Label each sighting's time of day as 'Morning', 'Afternoon', or 'Evening'.
+-- Problem 08
 SELECT 
 sighting_id,
 CASE 
@@ -84,7 +84,7 @@ ELSE 'Evening'
 END AS time_of_day
 FROM sightings;
 
--- 9️⃣ Delete rangers who have never sighted any species
+-- Problem 09
 DELETE FROM rangers
 WHERE ranger_id IN (
     SELECT rangers.ranger_id FROM rangers
@@ -92,11 +92,3 @@ WHERE ranger_id IN (
     WHERE sighting_id IS NULL
 )
 
-
-SELECT * FROM rangers;
-SELECT * FROM species;
-SELECT * FROM sightings;
-
-DROP Table rangers;
-DROP Table species;
-DROP Table sightings;
